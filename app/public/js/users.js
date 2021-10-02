@@ -23,4 +23,3 @@ const usersModule = (() => {
     },
   };
 })();
-console.table(body);

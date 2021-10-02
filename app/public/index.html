@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Web API</title>
     <!-- Load scripts -->
-    <script src="js/users.js"></script>
-    <script src="js/index.js"></script>
+    <script src="js/search.js" defer></script>
+    <script src="js/users.js" defer></script>
+    <script src="js/index.js" defer></script>
   </head>
   <body>
     <main>
@@ -15,7 +16,7 @@
       <label for="search">ユーザー名で検索</label>
       <input type="text" id="search" />
       <button id="search-btn">検索</button>
-      <table id="myTable" class="tablesorter">
+      <table>
         <thead>
           <tr>
             <th>ID</th>
