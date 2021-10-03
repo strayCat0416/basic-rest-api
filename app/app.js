@@ -102,6 +102,21 @@ app.put('/api/v1/users/:id', async (req, res) => {
   db.close();
 });
 
+//DELETE user data
+app.delete('/api/v1/users/:id', async (req, res) => {
+  //Connect database
+  const db = new sqlite3.Database(dbPath);
+  const id = req.params.id;
+  //現在のユーザー情報を取得する
+  await run(
+    `DELETE FROM users WHERE id=${id}`,
+    db,
+    res,
+    'ユーザー情報を削除しました！',
+  );
+  db.close();
+});
+
 const port = process.env.PORT || 3000;
 app.listen(port);
 console.log('Listen on port: ' + port);
