@@ -47,6 +47,7 @@ app.get('/api/v1/users/:id', (req, res) => {
   db.close();
 });
 
+//PostメソッドとPutとdeleteメソッドで使えるAPI
 const run = async (sql, db, res, message) => {
   return new Promise((resolve, reject) => {
     db.run(sql, err => {
