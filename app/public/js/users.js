@@ -63,5 +63,19 @@ const usersModule = (() => {
       alert(resJson.message);
       window.location.href = '/';
     },
+    deleteUser: async uid => {
+      const ret = window.confirm('このユーザーを削除しますか？');
+      if (!ret) {
+        return false;
+      } else {
+        const res = await fetch(BASE_URL + '/' + uid, {
+          method: 'DELETE',
+          Headers: headers,
+        });
+        const resJson = await res.json();
+        alert(resJson.message);
+        window.location.href = '/';
+      }
+    },
   };
 })();
