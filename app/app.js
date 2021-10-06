@@ -51,13 +51,11 @@ app.get('/api/v1/users/:id', (req, res) => {
   db.close();
 });
 
-//PostメソッドとPutとdeleteメソッドで使えるAPI
-const run = async (sql, db, res, message) => {
+const run = async (sql, db) => {
   return new Promise((resolve, reject) => {
     db.run(sql, err => {
       if (err) {
-        res.status(500).send(err);
-        return reject();
+        return reject(err);
       } else {
         res.json({message: message});
         return resolve();
@@ -68,19 +66,26 @@ const run = async (sql, db, res, message) => {
 
 //Create a new user
 app.post('/api/v1/users', async (req, res) => {
-  //Connect database
-  const db = new sqlite3.Database(dbPath);
-  const name = req.body.name;
-  const profile = req.body.profile ? req.body.profile : '';
-  const dateOfBirth = req.body.date_of_birth ? req.body.date_of_birth : '';
+  if (!req.body.name || req.body.name === '') {
+    res.status(400).send({error: 'ユーザー名が指定されていません。'});
+  } else {
+    //Connect database
+    const db = new sqlite3.Database(dbPath);
 
-  await run(
-    `INSERT INTO users (name, profile, date_of_birth) VALUES ("${name}","${profile}","${dateOfBirth}")`,
-    db,
-    res,
-    '新規ユーザーを作成しました！',
-  );
-  db.close();
+    const name = req.body.name;
+    const profile = req.body.profile ? req.body.profile : '';
+    const dateOfBirth = req.body.date_of_birth ? req.body.date_of_birth : '';
+    try {
+      await run(
+        `INSERT INTO users (name, profile, date_of_birth) VALUES ("${name}","${profile}","${dateOfBirth}")`,
+        db,
+      );
+      res.status(201).send({message: '新規ユーザーを作成しました。'});
+    } catch (e) {
+      res.status(500).send({error: e});
+    }
+    db.close();
+  }
 });
 
 //Update user data
